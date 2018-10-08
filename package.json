@@ -1,0 +1,19 @@
+{
+  "name": "data.noisemachines.io",
+  "version": "0.0.1",
+  "description": "The API layer of noisemachines.io.",
+  "main": "index.js",
+  "repository": "https://github.com/noise-machines/data.noisemachines.io",
+  "author": "Thomas Bailey (@noise_machines)",
+  "license": "MIT",
+  "dependencies": {
+    "micro": "^9.3.3"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0"
+  },
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev"
+  }
+}
