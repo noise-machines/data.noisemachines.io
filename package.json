@@ -11,6 +11,7 @@
     "lodash.mapvalues": "^4.6.0",
     "luxon": "^1.4.3",
     "micro": "^9.3.3",
+    "query-string": "^6.2.0",
     "xml-parser": "^1.2.1"
   },
   "devDependencies": {

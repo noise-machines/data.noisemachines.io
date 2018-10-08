@@ -2,6 +2,7 @@ const axios = require('axios')
 const { DateTime } = require('luxon')
 const mapValues = require('lodash.mapvalues')
 const urlParser = require('url')
+const queryString = require('query-string')
 
 const parseInt = string => Number.parseInt(string, 10)
 
@@ -11,9 +12,18 @@ const toMeta = meta => {
   return result
 }
 
+const toSecondsSinceEpoch = dateTime => Math.round(dateTime.toMillis() / 1000)
+const fromSecondsSinceEpoch = secondsSinceEpoch =>
+  DateTime.fromMillis(secondsSinceEpoch * 1000)
+
 const toListen = track => {
-  const secondsSinceEpoch = parseInt(track.date.uts)
-  const dateTime = DateTime.fromMillis(secondsSinceEpoch * 1000)
+  let dateTime
+  if (track.date) {
+    const secondsSinceEpoch = parseInt(track.date.uts)
+    dateTime = fromSecondsSinceEpoch(secondsSinceEpoch)
+  } else {
+    dateTime = DateTime.utc()
+  }
   return {
     track: {
       name: track.name,
@@ -31,8 +41,14 @@ const toListen = track => {
   }
 }
 
-const getListens = async (page = 1) => {
-  const endpoint = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=noise_machines&api_key=${process.env.LAST_FM_API_KEY}&format=json&page=${page}`
+const getListens = async options => {
+  if (options.from != null) options.from = toSecondsSinceEpoch(options.from)
+  if (options.to != null) options.to = toSecondsSinceEpoch(options.to)
+  options.api_key = process.env.LAST_FM_API_KEY
+  const endpoint =
+    'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=noise_machines&format=json&limit=200&' +
+    queryString.stringify(options)
+
   const response = await axios.get(endpoint)
   const data = response.data.recenttracks
   const listens = {
@@ -44,9 +60,14 @@ const getListens = async (page = 1) => {
 
 module.exports = async (req, res) => {
   const url = urlParser.parse(req.url, true)
+  const options = url.query
   switch (url.pathname) {
     case '/thomas/listens':
-      return getListens(url.query.page)
+      return getListens(options)
+    case '/thomas/listens/today':
+      options.from = DateTime.utc().startOf('day')
+      options.to = DateTime.utc()
+      return getListens(options)
   }
   return ''
 }
