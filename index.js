@@ -12,9 +12,8 @@ const toMeta = meta => {
 }
 
 const toListen = track => {
-  console.log(track)
-  const millisecondsSinceEpoch = parseInt(track.date.uts)
-  const dt = DateTime.fromMillis(millisecondsSinceEpoch)
+  const secondsSinceEpoch = parseInt(track.date.uts)
+  const dateTime = DateTime.fromMillis(secondsSinceEpoch * 1000)
   return {
     track: {
       name: track.name,
@@ -28,7 +27,7 @@ const toListen = track => {
       name: track.artist['#text'],
       musicBrainzId: track.artist.mbid
     },
-    dateTime: dt
+    dateTime: dateTime.toJSON()
   }
 }
 
