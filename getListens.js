@@ -16,12 +16,12 @@ const fromSecondsSinceEpoch = secondsSinceEpoch =>
   DateTime.fromMillis(secondsSinceEpoch * 1000)
 
 const toListen = track => {
-  let dateTime
+  let listenedAt
   if (track.date) {
     const secondsSinceEpoch = parseInt(track.date.uts)
-    dateTime = fromSecondsSinceEpoch(secondsSinceEpoch)
+    listenedAt = fromSecondsSinceEpoch(secondsSinceEpoch)
   } else {
-    dateTime = DateTime.utc()
+    listenedAt = DateTime.local()
   }
   return {
     track: {
@@ -36,7 +36,7 @@ const toListen = track => {
       name: track.artist['#text'],
       musicBrainzId: track.artist.mbid
     },
-    dateTime: dateTime.toJSON()
+    listenedAt: listenedAt.toJSON()
   }
 }
 
