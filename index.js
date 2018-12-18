@@ -1,3 +1,4 @@
+require('dotenv').config()
 const urlParser = require('url')
 const mapValues = require('lodash/mapValues')
 const { DateTime } = require('./luxon')
