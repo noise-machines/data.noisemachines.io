@@ -24,8 +24,5 @@
     "start": "micro",
     "dev": "micro-dev",
     "deploy": "now --public --dotenv && now alias"
-  },
-  "now": {
-    "alias": "data.noisemachines.io"
   }
 }
