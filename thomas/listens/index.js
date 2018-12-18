@@ -1,3 +1,4 @@
+require('dotenv').config()
 const axios = require('axios')
 const urlParser = require('url')
 const mapValues = require('lodash/mapValues')
@@ -110,7 +111,7 @@ const defaultOptions = {
   to: null
 }
 
-const getListens = async (req, res) => {
+const parseOptions = req => {
   const url = urlParser.parse(req.url, true)
   let options = mapValues(url.query, tryParseInt)
   options = Object.assign(defaultOptions, options)
@@ -119,11 +120,21 @@ const getListens = async (req, res) => {
   if (options.from != null) options.from = toSecondsSinceEpoch(options.from)
   if (options.to != null) options.to = toSecondsSinceEpoch(options.to)
 
-  const lastFmOptions = getLastFmOptions(options)
-  const lastFmResponse = await getFromLastFm(lastFmOptions)
-  const response = toResponse(options, lastFmResponse)
+  return options
+}
 
-  return stringify(response)
+const getListens = async (req, res) => {
+  console.log('Got request')
+  const options = parseOptions(req)
+  console.log({ options })
+  const lastFmOptions = getLastFmOptions(options)
+  console.log({ lastFmOptions })
+  const lastFmResponse = await getFromLastFm(lastFmOptions)
+  console.log({ lastFmResponse })
+  const response = toResponse(options, lastFmResponse)
+  console.log({ response })
+
+  res.end(stringify(response))
 }
 
 module.exports = getListens

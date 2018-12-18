@@ -23,7 +23,6 @@
   },
   "scripts": {
     "start": "micro",
-    "dev": "micro-dev",
-    "deploy": "now --public && now alias"
+    "dev": "micro-dev"
   }
 }
