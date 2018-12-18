@@ -1,12 +1,14 @@
-const { DateTime } = require('./luxon')
 const urlParser = require('url')
+const mapValues = require('lodash/mapValues')
+const { DateTime } = require('./luxon')
+const tryParseInt = require('./tryParseInt')
 const getListens = require('./getListens')
 const getBooks = require('./getBooks')
 const getTimeZone = require('./getTimeZone')
 
 module.exports = async (req, res) => {
   const url = urlParser.parse(req.url, true)
-  const options = url.query
+  const options = mapValues(url.query, tryParseInt)
   switch (url.pathname) {
     case '/thomas/listens':
       return getListens(options)
