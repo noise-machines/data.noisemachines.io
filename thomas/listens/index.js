@@ -123,9 +123,21 @@ const parseOptions = req => {
   return options
 }
 
+const setHeaders = res => {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*')
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET')
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+}
+
 const getListens = async (req, res) => {
   console.log('Got request')
   const options = parseOptions(req)
+  setHeaders(res)
   console.log({ options })
   const lastFmOptions = getLastFmOptions(options)
   console.log({ lastFmOptions })
