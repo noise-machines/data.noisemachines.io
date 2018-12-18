@@ -1,0 +1,11 @@
+{
+  "name": "data.noisemachines.io",
+  "version": "0.0.0",
+  "main": "   ",
+  "repository": "git@github.com:noise-machines/data.noisemachines.io.git",
+  "author": "C. Thomas Bailey (@noise_machines)",
+  "license": "MIT",
+  "scripts": {
+    "deploy": "now --public && now alias"
+  }
+}

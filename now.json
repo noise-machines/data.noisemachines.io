@@ -1,6 +1,9 @@
 {
   "alias": "data.noisemachines.io",
   "version": 2,
+  "env": {
+    "LAST_FM_API_KEY": "@last-fm-api-key"
+  },
   "builds": [
     {
       "src": "thomas/listens/index.js",
