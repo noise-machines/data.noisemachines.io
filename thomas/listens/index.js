@@ -1,4 +1,3 @@
-require('dotenv').config()
 const axios = require('axios')
 const urlParser = require('url')
 const mapValues = require('lodash/mapValues')
@@ -8,7 +7,11 @@ const { DateTime } = require('./luxon')
 const getHostAndProtocol = require('./getHostAndProtocol')
 const tryParseInt = require('./tryParseInt')
 
-const toSecondsSinceEpoch = dateTime => Math.round(dateTime.toMillis() / 1000)
+const toSecondsSinceEpoch = dateTime => {
+  if (!dateTime) return null
+  return Math.round(dateTime.toMillis() / 1000)
+}
+
 const fromSecondsSinceEpoch = secondsSinceEpoch =>
   DateTime.fromMillis(secondsSinceEpoch * 1000)
 
@@ -93,8 +96,8 @@ const getLastFmOptions = options => ({
   // parameter is 0-indexed since JS collections are virtually
   // all 0-indexed.
   page: options.offset + 1,
-  from: options.from,
-  to: options.to
+  from: toSecondsSinceEpoch(options.from),
+  to: toSecondsSinceEpoch(options.to)
 })
 
 const getFromLastFm = async options => {
@@ -115,10 +118,10 @@ const parseOptions = req => {
   const url = urlParser.parse(req.url, true)
   let options = mapValues(url.query, tryParseInt)
   options = Object.assign(defaultOptions, options)
-  options.hostAndProtocol = getHostAndProtocol(req)
+  if (options.from) options.from = DateTime.fromMillis(options.from)
+  if (options.to) options.to = DateTime.fromMillis(options.to)
 
-  if (options.from != null) options.from = toSecondsSinceEpoch(options.from)
-  if (options.to != null) options.to = toSecondsSinceEpoch(options.to)
+  options.hostAndProtocol = getHostAndProtocol(req)
 
   return options
 }
@@ -135,16 +138,17 @@ const setHeaders = res => {
 }
 
 const getListens = async (req, res) => {
-  console.log('Got request')
+  if (!process.env.LAST_FM_API_KEY) {
+    res.statusCode = 500
+    res.end('LAST_FM_API_KEY environment variable not set.')
+    return
+  }
+
   const options = parseOptions(req)
   setHeaders(res)
-  console.log({ options })
   const lastFmOptions = getLastFmOptions(options)
-  console.log({ lastFmOptions })
   const lastFmResponse = await getFromLastFm(lastFmOptions)
-  console.log({ lastFmResponse })
   const response = toResponse(options, lastFmResponse)
-  console.log({ response })
 
   res.end(stringify(response))
 }
