@@ -4,7 +4,7 @@ const queryString = require('query-string')
 const getHostAndProtocol = require('../../util/getHostAndProtocol')
 const tryParseInt = require('../../util/tryParseInt')
 const UrlPattern = require('url-pattern')
-const Lyricist = require('lyricist')
+const Lyricist = require('@noise-machines/lyricist')
 const lyricist = new Lyricist(process.env.GENIUS_ACCESS_TOKEN)
 
 const toQuery = (offset, limit) =>
@@ -43,9 +43,7 @@ const toResponse = (options, lyrics) => {
 
 const defaultOptions = {
   offset: 0,
-  limit: 20,
-  from: null,
-  to: null
+  limit: 20
 }
 
 const parseOptions = req => {
