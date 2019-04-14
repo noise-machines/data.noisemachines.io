@@ -2,11 +2,18 @@
   "alias": "data.noisemachines.io",
   "version": 2,
   "env": {
-    "LAST_FM_API_KEY": "@last-fm-api-key"
+    "LAST_FM_API_KEY": "@last-fm-api-key",
+    "PG_CONNECTION_STRING": "@pg-connection-string"
   },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
+    }
+  ],
   "builds": [
     {
-      "src": "thomas/listens/index.js",
+      "src": "index.js",
       "use": "@now/node"
     }
   ]

@@ -4,8 +4,8 @@ const mapValues = require('lodash/mapValues')
 const queryString = require('query-string')
 const stringify = require('json-stringify-safe')
 const { DateTime } = require('./luxon')
-const getHostAndProtocol = require('./getHostAndProtocol')
-const tryParseInt = require('./tryParseInt')
+const getHostAndProtocol = require('../../util/getHostAndProtocol')
+const tryParseInt = require('../../util/tryParseInt')
 
 const toSecondsSinceEpoch = dateTime => {
   if (!dateTime) return null

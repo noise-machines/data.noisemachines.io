@@ -1,0 +1,17 @@
+{
+  "name": "artists",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "C. Thomas Bailey (@noise_machines)",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^0.16.5",
+    "lyricist": "^2.2.2",
+    "micro": "^9.3.3",
+    "pg": "^7.9.0",
+    "query-string": "^6.4.2"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0"
+  }
+}

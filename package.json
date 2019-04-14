@@ -1,14 +1,24 @@
 {
   "name": "data.noisemachines.io",
   "version": "0.0.0",
-  "main": "   ",
   "repository": "git@github.com:noise-machines/data.noisemachines.io.git",
   "author": "C. Thomas Bailey (@noise_machines)",
   "license": "MIT",
   "scripts": {
-    "deploy": "now --public && now alias"
+    "deploy": "now --public && now alias",
+    "dev": "micro-dev",
+    "start": "micro"
   },
   "dependencies": {
-    "dotenv": "^6.2.0"
+    "dotenv": "^7.0.0",
+    "loadash": "^1.0.0",
+    "lodash": "^4.17.11",
+    "micro": "^9.3.3",
+    "query-string": "^6.4.2",
+    "url-pattern": "^1.0.3"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0",
+    "standard": "^12.0.1"
   }
 }
